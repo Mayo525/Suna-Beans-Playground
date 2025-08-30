@@ -34,7 +34,7 @@ It's not complicated.
 
 ## How to Play
 
-1.  Go to the [**Releases Page**](https://github.com/YOUR_USERNAME/YOUR_REPO/releases).
+1.  Go to the [**Releases Page**](https://github.com/Mayo525/Suna-Beans-Playground/releases).
 2.  Download the latest `.exe` file.
 3.  Run it. Start the bean-pocalypse.
 
