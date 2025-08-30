@@ -56,7 +56,7 @@ Just some basic web stuff packaged with Electron.
 
 ## Issues / Bugs
 
-If you find a bug or something breaks, [**open an issue**](https://github.com/YOUR_USERNAME/YOUR_REPO/issues) and I'll probably look at it eventually.
+If you find a bug or something breaks, [**open an issue**](https://github.com/Mayo525/Suna-Beans-Playground/issues) and I'll probably look at it eventually.
 
 ---
 
