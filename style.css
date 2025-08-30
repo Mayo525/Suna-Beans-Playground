@@ -1,0 +1,14 @@
+@font-face {
+  font-family: 'Orbitron';
+  font-style: normal;
+  font-weight: 400;
+  src: url(./fonts/Orbitron-Regular.ttf) format('truetype');
+}
+
+/* Bold weight (700) */
+@font-face {
+  font-family: 'Orbitron';
+  font-style: normal;
+  font-weight: 700;
+  src: url(./fonts/Orbitron-Bold.ttf) format('truetype');
+}

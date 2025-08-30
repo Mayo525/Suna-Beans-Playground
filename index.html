@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Suna Beans Playground</title>
+
+  <meta property="og:title" content="Get Azure Floof here For free!">
+  <meta property="og:image" content="./beans/AzureBean.png">
+  <meta name="theme-color" content="#2ddada">
+  <meta property="og:description" content="A fun space bean playground!">
+  <meta property="og:type" content="website">
+
+  <link href="style.css" rel="stylesheet">
+  
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: black;
+      overflow: hidden;
+      user-select: none;
+      font-family: 'Orbitron', sans-serif;
+      color: white;
+    }
+
+    .ui-container {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 20;
+      text-align: center;
+    }
+
+    .ui {
+      background: rgba(20, 20, 40, 0.8);
+      padding: 6px 10px;
+      border: 2px solid #0ff;
+      border-radius: 0 0 15px 15px;
+      display: flex;
+      flex-wrap: wrap; 
+      gap: 12px;
+      justify-content: center;
+      align-items: center;
+      max-width: 90vw; 
+      transition: transform 0.4s ease-out, opacity 0.4s ease-out;
+      transform: translateY(-110%);
+      opacity: 0;
+      visibility: hidden;
+      margin-top: 5px;
+    }
+    
+    .ui.visible {
+      transform: translateY(0);
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .ui img {
+      width: 50px;
+      height: 50px;
+      border-radius: 8px;
+      border: 1px solid #0ff;
+      cursor: pointer;
+      transition: transform 0.2s, border 0.2s;
+    }
+    .ui img:hover {
+      transform: scale(1.1);
+      border-color: white;
+    }
+
+    .ui-btn {
+      background: rgba(0, 50, 50, 0.8);
+      color: #0ff;
+      border: 1px solid #0ff;
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      height: 50px;
+      box-sizing: border-box;
+    }
+
+    .ui-btn:hover {
+      background: #0ff;
+      color: black;
+    }
+
+    .toggle-btn {
+      background: #0ff;
+      color: black;
+      font-weight: bold;
+      padding: 4px 10px;
+      border-radius: 0 0 10px 10px;
+      cursor: pointer;
+      text-align: center;
+      font-size: 14px;
+      border: none;
+      outline: none;
+      transition: background 0.2s;
+    }
+    .toggle-btn:hover {
+      background: white;
+    }
+
+    .stars {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+    .star {
+      position: absolute;
+      border-radius: 50%;
+      background: white;
+      opacity: 0.8;
+      animation: twinkle 3s infinite alternate;
+    }
+    @keyframes twinkle {
+      0% { opacity: 0.2; }
+      50% { opacity: 1; }
+      100% { opacity: 0.3; }
+    }
+
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+    }
+
+    .controls {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      background: rgba(0,0,0,0.6);
+      padding: 8px 14px;
+      border: 1px solid #0ff;
+      border-radius: 12px;
+      font-size: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      color: #0ff;
+      z-index: 20;
+      justify-content: center;
+      transition: transform 0.4s ease-out, opacity 0.4s ease-out;
+      transform: translateX(-50%) translateY(120%);
+      opacity: 0;
+    }
+    
+    .controls.visible {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    .controls-toggle-btn {
+      position: absolute;
+      bottom: 15px;
+      right: 15px;
+      z-index: 21;
+      background: rgba(0, 50, 50, 0.8);
+      color: #0ff;
+      border: 1px solid #0ff;
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-family: 'Orbitron', sans-serif;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .controls-toggle-btn:hover {
+      background: #0ff;
+      color: black;
+    }
+  </style>
+</head>
+<body>
+  <div class="stars"></div>
+
+  <div class="ui-container">
+    <button class="toggle-btn" onclick="toggleUI()">▼ Menu</button>
+    <div class="ui" id="ui-bar">
+      <img id="bean-img-Minty" src="./beans/MintyBean.png" onclick="spawnBean('Minty')" oncontextmenu="resizeBean('Minty', event)" title="Minty (Size: 70)">
+      <img id="bean-img-Suna" src="./beans/SunaBean.png" onclick="spawnBean('Suna')" oncontextmenu="resizeBean('Suna', event)" title="Suna (Size: 70)">
+      <img id="bean-img-Cooki" src="./beans/CookiBean.png" onclick="spawnBean('Cooki')" oncontextmenu="resizeBean('Cooki', event)" title="Cooki (Size: 70)">
+      <img id="bean-img-Aquila" src="./beans/AquilaBean.png" onclick="spawnBean('Aquila')" oncontextmenu="resizeBean('Aquila', event)" title="Aquila (Size: 70)">
+      <img id="bean-img-Auto" src="./beans/Autoflean.png" onclick="spawnBean('Auto')" oncontextmenu="resizeBean('Auto', event)" title="Auto (Size: 70)">
+      <img id="bean-img-Azure" src="./beans/AzureBean.png" onclick="spawnBean('Azure')" oncontextmenu="resizeBean('Azure', event)" title="Azure (Size: 70)">
+      <img id="bean-img-Berry" src="./beans/BerryBean.png" onclick="spawnBean('Berry')" oncontextmenu="resizeBean('Berry', event)" title="Berry (Size: 70)">
+      <img id="bean-img-Bunn" src="./beans/BunnBean.png" onclick="spawnBean('Bunn')" oncontextmenu="resizeBean('Bunn', event)" title="Bunn (Size: 70)">
+      <img id="bean-img-Cheese" src="./beans/CheeseBean.png" onclick="spawnBean('Cheese')" oncontextmenu="resizeBean('Cheese', event)" title="Cheese (Size: 70)">
+      <img id="bean-img-Flamey" src="./beans/FlameyBean.png" onclick="spawnBean('Flamey')" oncontextmenu="resizeBean('Flamey', event)" title="Flamey (Size: 70)">
+      <img id="bean-img-Frost" src="./beans/FrostBean.png" onclick="spawnBean('Frost')" oncontextmenu="resizeBean('Frost', event)" title="Frost (Size: 70)">
+      <img id="bean-img-Funny" src="./beans/FunnyBean.png" onclick="spawnBean('Funny')" oncontextmenu="resizeBean('Funny', event)" title="Funny (Size: 70)">
+      <img id="bean-img-Gianna" src="./beans/GiannaBean.png" onclick="spawnBean('Gianna')" oncontextmenu="resizeBean('Gianna', event)" title="Gianna (Size: 70)">
+      <img id="bean-img-Goob" src="./beans/GoobBean.png" onclick="spawnBean('Goob')" oncontextmenu="resizeBean('Goob', event)" title="Goob (Size: 70)">
+      <img id="bean-img-Helen" src="./beans/HelenBean.png" onclick="spawnBean('Helen')" oncontextmenu="resizeBean('Helen', event)" title="Helen (Size: 70)">
+      <img id="bean-img-Landon" src="./beans/LandonBean.png" onclick="spawnBean('Landon')" oncontextmenu="resizeBean('Landon', event)" title="Landon (Size: 70)">
+      <img id="bean-img-Mayo" src="./beans/MayoBean.png" onclick="spawnBean('Mayo')" oncontextmenu="resizeBean('Mayo', event)" title="Mayo (Size: 70)">
+      <img id="bean-img-Moai" src="./beans/MoaiBean.png" onclick="spawnBean('Moai')" oncontextmenu="resizeBean('Moai', event)" title="Moai (Size: 70)">
+      <img id="bean-img-Rosa" src="./beans/RosaBean.png" onclick="spawnBean('Rosa')" oncontextmenu="resizeBean('Rosa', event)" title="Rosa (Size: 70)">
+      <img id="bean-img-Smeargle" src="./beans/SmeargleBean.png" onclick="spawnBean('Smeargle')" oncontextmenu="resizeBean('Smeargle', event)" title="Smeargle (Size: 70)">
+      <img id="bean-img-Snowy" src="./beans/SnowyBean.png" onclick="spawnBean('Snowy')" oncontextmenu="resizeBean('Snowy', event)" title="Snowy (Size: 70)">
+      <img id="bean-img-Solar" src="./beans/SolarBean.png" onclick="spawnBean('Solar')" oncontextmenu="resizeBean('Solar', event)" title="Solar (Size: 70)">
+      <img id="bean-img-Sophie" src="./beans/SophieBean.png" onclick="spawnBean('Sophie')" oncontextmenu="resizeBean('Sophie', event)" title="Sophie (Size: 70)">
+      <button class="ui-btn" onclick="spawnAllBeans()">Spawn All</button>
+      <button class="ui-btn" onclick="clearBeans()">Clear</button>
+    </div>
+  </div>
+
+  <div class="controls visible" id="controls-hud">
+    <div>Drag: Move / Throw</div>
+    <div>Right-Drag: Spin</div>
+    <div>Right-Click Icon: Resize</div>
+    <div>Clear: Button</div>
+    <div>▼/▲ Toggle Menu</div>
+  </div>
+
+  <button class="controls-toggle-btn" onclick="toggleControls()">Hide Controls</button>
+
+  <script src="./js/matter.min.js"></script>
+  <script>
+    const starContainer = document.querySelector('.stars');
+    for (let i = 0; i < 200; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      const size = Math.random() * 2 + 1;
+      star.style.width = size + "px";
+      star.style.height = size + "px";
+      star.style.top = Math.random() * 100 + "%";
+      star.style.left = Math.random() * 100 + "%";
+      star.style.animationDuration = (2 + Math.random() * 3) + "s";
+      starContainer.appendChild(star);
+    }
+
+    const { Engine, Render, Runner, World, Bodies, Mouse, MouseConstraint, Query, Body, Composite } = Matter;
+
+    const engine = Engine.create();
+    engine.world.gravity.y = 0;
+    engine.world.gravity.x = 0;
+    const world = engine.world;
+
+    const render = Render.create({
+      element: document.body,
+      engine: engine,
+      options: {
+        width: window.innerWidth,
+        height: window.innerHeight,
+        wireframes: false,
+        background: "transparent"
+      }
+    });
+    Render.run(render);
+    Runner.run(Runner.create(), engine);
+
+    const beans = {
+        Minty:    { src: "./beans/MintyBean.png", radius: 70 },
+        Suna:     { src: "./beans/SunaBean.png", radius: 70 },
+        Cooki:    { src: "./beans/CookiBean.png", radius: 70 },
+        Aquila:   { src: "./beans/AquilaBean.png", radius: 70 },
+        Auto:     { src: "./beans/Autoflean.png", radius: 70 },
+        Azure:    { src: "./beans/AzureBean.png", radius: 70 },
+        Berry:    { src: "./beans/BerryBean.png", radius: 70 },
+        Bunn:     { src: "./beans/BunnBean.png", radius: 70 },
+        Cheese:   { src: "./beans/CheeseBean.png", radius: 70 },
+        Flamey:   { src: "./beans/FlameyBean.png", radius: 70 },
+        Frost:    { src: "./beans/FrostBean.png", radius: 70 },
+        Funny:    { src: "./beans/FunnyBean.png", radius: 70 },
+        Gianna:   { src: "./beans/GiannaBean.png", radius: 70 },
+        Goob:     { src: "./beans/GoobBean.png", radius: 70 },
+        Helen:    { src: "./beans/HelenBean.png", radius: 70 },
+        Landon:   { src: "./beans/LandonBean.png", radius: 70 },
+        Mayo:     { src: "./beans/MayoBean.png", radius: 70 },
+        Moai:     { src: "./beans/MoaiBean.png", radius: 70 },
+        Rosa:     { src: "./beans/RosaBean.png", radius: 70 },
+        Smeargle: { src: "./beans/SmeargleBean.png", radius: 70 },
+        Snowy:    { src: "./beans/SnowyBean.png", radius: 70 },
+        Solar:    { src: "./beans/SolarBean.png", radius: 70 },
+        Sophie:   { src: "./beans/SophieBean.png", radius: 70 }
+    };
+    let activeBeans = [];
+
+    function createBean(x, y, radius, src) {
+      return Bodies.circle(x, y, radius, {
+        restitution: 0.9,
+        frictionAir: 0.002,
+        render: {
+          sprite: {
+            texture: src,
+            xScale: (radius * 2) / 256,
+            yScale: (radius * 2) / 256
+          }
+        }
+      });
+    }
+
+    function spawnBean(name) {
+      const cfg = beans[name];
+      const bean = createBean(
+        window.innerWidth / 2 + (Math.random()*200-100),
+        window.innerHeight / 2 + (Math.random()*200-100),
+        cfg.radius,
+        cfg.src
+      );
+      activeBeans.push(bean);
+      World.add(world, bean);
+    }
+
+    function spawnAllBeans() {
+      for (const name in beans) {
+        spawnBean(name);
+      }
+    }
+
+    function clearBeans() {
+      activeBeans.forEach(b => World.remove(world, b));
+      activeBeans = [];
+    }
+    
+    function resizeBean(name, event) {
+      event.preventDefault(); 
+      const beanConfig = beans[name];
+      const currentSize = beanConfig.radius;
+      
+      const newSizeInput = prompt(`Enter new size for ${name} (current: ${currentSize}).\nRecommended: 20-150`, currentSize);
+
+      if (newSizeInput === null || newSizeInput.trim() === "") {
+        return; 
+      }
+
+      const newSize = parseFloat(newSizeInput);
+
+      if (!isNaN(newSize) && newSize >= 20 && newSize <= 150) {
+        beanConfig.radius = newSize;
+        const imgElement = document.getElementById(`bean-img-${name}`);
+        if (imgElement) {
+          imgElement.title = `${name} (Size: ${newSize})`;
+        }
+      } else {
+        alert("Invalid size. Please enter a number between 20 and 150.");
+      }
+    }
+
+    let walls = [];
+    function createOrUpdateWalls() {
+        if (walls.length > 0) {
+            Composite.remove(world, walls);
+            walls = [];
+        }
+        const boundaryPadding = 500;
+        const wallThickness = 200;
+        const newWalls = [
+            Bodies.rectangle(window.innerWidth / 2, -boundaryPadding, window.innerWidth + (boundaryPadding * 2), wallThickness, { isStatic: true }),
+            Bodies.rectangle(window.innerWidth / 2, window.innerHeight + boundaryPadding, window.innerWidth + (boundaryPadding * 2), wallThickness, { isStatic: true }),
+            Bodies.rectangle(-boundaryPadding, window.innerHeight / 2, wallThickness, window.innerHeight + (boundaryPadding * 2), { isStatic: true }),
+            Bodies.rectangle(window.innerWidth + boundaryPadding, window.innerHeight / 2, wallThickness, window.innerHeight + (boundaryPadding * 2), { isStatic: true })
+        ];
+        walls = newWalls;
+        World.add(world, walls);
+    }
+    createOrUpdateWalls();
+
+    const mouse = Mouse.create(render.canvas);
+    const mouseConstraint = MouseConstraint.create(engine, {
+      mouse: mouse,
+      constraint: { stiffness: 0.2, render: { visible: false } }
+    });
+    World.add(world, mouseConstraint);
+    render.mouse = mouse;
+
+    let spinningBody = null;
+    let lastMouse = null;
+    render.canvas.addEventListener("contextmenu", e => e.preventDefault());
+    render.canvas.addEventListener("mousedown", e => {
+      if (e.button === 2) {
+        const pos = mouse.position;
+        const found = Query.point(activeBeans, pos);
+        if (found.length > 0) {
+          spinningBody = found[0];
+          lastMouse = { ...pos };
+        }
+      }
+    });
+    render.canvas.addEventListener("mousemove", e => {
+      if (spinningBody && lastMouse) {
+        const dx = mouse.position.x - lastMouse.x;
+        const dy = mouse.position.y - lastMouse.y;
+        Body.setAngularVelocity(spinningBody, spinningBody.angularVelocity + (dx+dy) * 0.002);
+        lastMouse = { ...mouse.position };
+      }
+    });
+    render.canvas.addEventListener("mouseup", e => {
+      if (e.button === 2) {
+        spinningBody = null;
+        lastMouse = null;
+      }
+    });
+
+    window.addEventListener('resize', () => {
+      render.bounds.max.x = window.innerWidth;
+      render.bounds.max.y = window.innerHeight;
+      render.options.width = window.innerWidth;
+      render.options.height = window.innerHeight;
+      render.canvas.width = window.innerWidth;
+      render.canvas.height = window.innerHeight;
+      createOrUpdateWalls();
+    });
+
+    function toggleUI() {
+      const bar = document.getElementById('ui-bar');
+      const btn = document.querySelector('.toggle-btn');
+      
+      bar.classList.toggle('visible');
+
+      if (bar.classList.contains('visible')) {
+        btn.textContent = "▲ Menu";
+      } else {
+        btn.textContent = "▼ Menu";
+      }
+    }
+
+    function toggleControls() {
+        const hud = document.getElementById('controls-hud');
+        const btn = document.querySelector('.controls-toggle-btn');
+        
+        hud.classList.toggle('visible');
+
+        if (hud.classList.contains('visible')) {
+            btn.textContent = "Hide Controls";
+        } else {
+            btn.textContent = "Show Controls";
+        }
+    }
+  </script>
+</body>
+</html>

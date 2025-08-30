@@ -1,0 +1,35 @@
+{
+  "name": "sunabeansportable",
+  "version": "1.0.0",
+  "description": "A fun space beans playground!",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^25.0.0",
+    "electron-builder": "^24.0.0"
+  },
+  "build": {
+    "appId": "com.example.spacebeans",
+    "productName": "Suna Beans Playground",
+    "files": [
+      "index.html",
+      "main.js",
+      "preload.js",
+      "style.css",
+      "js/**/*",
+      "beans/**/*",
+      "fonts/**/*",
+      "build/**/*"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "build/icon.ico"
+    }
+  }
+}
